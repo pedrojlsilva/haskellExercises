@@ -1,11 +1,13 @@
 
--- https://stackoverflow.com/questions/48365022/determine-if-binary-tree-is-bst-haskell
 
 data Tree t = Nilt | Node t (Tree t) (Tree t) deriving (Read)
 
+isBSTaux :: (t -> Bool) -> Tree t -> Bool
+isBSTaux _ Nilt = True
+isBSTaux c (Node h l r) = c h && isBSTaux c l && isBSTaux c r
+
+
+
 isBST :: Ord t => Tree t -> Bool
 isBST Nilt = True
-isBST (Node h l r) = f (<=h) l && f (>=h) r && isBST l && isBST r
-   where
-     f _ Nilt = True
-     f c (Node h l r) = c h && f c l && f c r
+isBST (Node value left right) = isBSTaux (<=value) left && isBSTaux (>=value) right && isBST left && isBST right
